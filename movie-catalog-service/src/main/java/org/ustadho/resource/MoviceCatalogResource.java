@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.ustadho.model.CatalogItem;
 import org.ustadho.model.Movie;
 import org.ustadho.model.Rating;
+import org.ustadho.model.UserRating;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,19 +27,18 @@ public class MoviceCatalogResource {
 
     @GetMapping("{userId}")
     public List<CatalogItem> getCatalog(@PathVariable("userId")  String userId) {
-        List<Rating> ratings = Arrays.asList(
-                new Rating("1", 4),
-                new Rating("2", 3)
-        );
-
-        return ratings.stream().map(rating -> {
-//            Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
+        UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/" + userId, UserRating.class);
+        return ratings.getUserRating().stream().map(rating -> {
+            Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
+            /*
             Movie movie = webClientBuilder.build()
                     .get()
                     .uri("http://localhost:8082/movies/" + rating.getMovieId())
                     .retrieve()
                     .bodyToMono(Movie.class)
                     .block();
+
+             */
             return new CatalogItem(movie.getName(), "Desc", rating.getRating());
 
         })
