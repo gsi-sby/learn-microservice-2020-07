@@ -1,4 +1,4 @@
-package org.ustadho.movieinfoservice.model;
+package org.ustadho.model;
 
 public class Movie {
     private String id;
