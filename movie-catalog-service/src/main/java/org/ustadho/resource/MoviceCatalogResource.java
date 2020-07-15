@@ -1,5 +1,6 @@
 package org.ustadho.resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("catalog")
 public class MoviceCatalogResource {
+    @Autowired
+    RestTemplate restTemplate;
 
     @GetMapping("{userId}")
     public List<CatalogItem> getCatalog(@PathVariable("userId")  String userId) {
-        RestTemplate restTemplate = new RestTemplate();
         List<Rating> ratings = Arrays.asList(
                 new Rating("1", 4),
                 new Rating("2", 3)
